@@ -15,7 +15,9 @@ const getUser = (req, res) => {
 };
 
 const getUserById = (req, res) => {
-  User.findById(req.user._id)
+  console.log('getuser', req.params);
+
+  User.findById(req.params.userId)
     .then((user) => res.send({ user }))
     .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
 };
