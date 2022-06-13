@@ -17,7 +17,10 @@ const getCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ card }))
+    .then((card) => {
+      if (!card) res.status(404).send({ message: 'Карточка не найдена' });
+      res.send({ data: card });
+    })
     .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
 };
 
@@ -27,7 +30,10 @@ const setLike = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((cards) => res.send({ data: cards }))
+    .then((card) => {
+      if (!card) res.status(404).send({ message: 'Карточка не найдена' });
+      res.send({ data: card });
+    })
     .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
 };
 
@@ -37,7 +43,10 @@ const removeLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((cards) => res.send({ data: cards }))
+    .then((card) => {
+      if (!card) res.status(404).send({ message: 'Карточка не найдена' });
+      res.send({ data: card });
+    })
     .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
 };
 
