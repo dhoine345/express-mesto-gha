@@ -15,11 +15,15 @@ const getUser = (req, res) => {
 };
 
 const getUserById = (req, res) => {
-  console.log('getuser', req.params);
-
   User.findById(req.params.userId)
-    .then((user) => res.send({ user }))
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
+    .then((user) => {
+      if (!user) res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+      res.send({ user });
+    })
+    .catch((err) => {
+      console.log('err', err);
+      res.status(400).send({ message: 'Произошла ошибка' });
+    });
 };
 
 const updateProfile = (req, res) => {
