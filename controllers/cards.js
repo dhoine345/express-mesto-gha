@@ -6,7 +6,10 @@ const createCard = (req, res) => {
 
   Card.create({ name, link, owner })
     .then((card) => res.send({ card }))
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') res.status(400).send({ message: 'Переданы некорректные данные' });
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 const getCard = (req, res) => {

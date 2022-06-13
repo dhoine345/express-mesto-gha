@@ -5,7 +5,10 @@ const createUser = (req, res) => {
 
   User.create({ name, about, avatar })
     .then((user) => res.send({ user }))
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') res.status(400).send({ message: 'Переданы некорректные данные' });
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 const getUser = (req, res) => {
@@ -34,7 +37,10 @@ const updateProfile = (req, res) => {
     upsert: true,
   })
     .then((user) => res.send({ data: user }))
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') res.status(400).send({ message: 'Переданы некорректные данные' });
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 const updateAvatar = (req, res) => {
@@ -46,7 +52,10 @@ const updateAvatar = (req, res) => {
     upsert: true,
   })
     .then((user) => res.send({ data: user }))
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') res.status(400).send({ message: 'Переданы некорректные данные' });
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 module.exports = {
