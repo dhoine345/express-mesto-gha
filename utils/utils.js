@@ -1,19 +1,19 @@
-const { errorCodes, errorMessages } = require('./constants');
+const { resCodes, errorMessages } = require('./constants');
 
 function handleErrors(name, res) {
   if (name === 'ValidationError' || name === 'CastError') {
-    res.status(errorCodes.BAD_REQUEST).send(errorMessages.badRequestMessage);
+    res.status(resCodes.BAD_REQUEST).send(errorMessages.badRequest);
     return;
   }
-  res.status(errorCodes.INTERNAL_SERVER_ERROR).send(errorMessages.commonError);
+  res.status(resCodes.INTERNAL_SERVER_ERROR).send(errorMessages.commonError);
 }
 
 function handleRequest(item, res, message) {
   if (!item) {
-    res.status(errorCodes.NOT_FOUND_ERROR).send(message);
+    res.status(resCodes.NOT_FOUND_ERROR).send(message);
     return;
   }
-  res.send({ item });
+  res.send({ data: item });
 }
 
 module.exports = {

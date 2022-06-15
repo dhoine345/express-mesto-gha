@@ -1,10 +1,11 @@
 const errorMessages = {
-  cardErrorMessage: { message: 'Карточка не найдена' },
-  userErrorMessage: { message: 'Запрашиваемый пользователь не найден' },
+  cardError: { message: 'Карточка не найдена' },
+  userError: { message: 'Запрашиваемый пользователь не найден' },
   commonError: { message: 'Произошла ошибка' },
-  badRequestMessage: { message: 'Переданы некорректные данные' },
+  badRequest: { message: 'Переданы некорректные данные' },
+  pageNotFound: { message: 'Страница не найдена' },
 };
-const errorCodes = {
+const resCodes = {
   CREATED_CODE: 201,
   NOT_FOUND_ERROR: 404,
   INTERNAL_SERVER_ERROR: 500,
@@ -13,5 +14,5 @@ const errorCodes = {
 
 module.exports = {
   errorMessages,
-  errorCodes,
+  resCodes,
 };
