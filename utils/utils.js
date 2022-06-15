@@ -1,5 +1,9 @@
-function handleValidationOrCastError(name, res) {
-  if (name === 'ValidationError' || name === 'CastError') res.status(400).send({ message: 'Переданы некорректные данные' });
+function handleErrors(name, res) {
+  if (name === 'ValidationError' || name === 'CastError') {
+    res.status(400).send({ message: 'Переданы некорректные данные' });
+    return;
+  }
+  res.status(500).send({ message: 'Произошла ошибка' });
 }
 
 function handleUserRequest(user, res) {
@@ -19,7 +23,7 @@ function handleCardRequest(card, res) {
 }
 
 module.exports = {
-  handleValidationOrCastError,
+  handleErrors,
   handleUserRequest,
   handleCardRequest,
 };

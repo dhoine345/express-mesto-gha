@@ -1,15 +1,14 @@
 const User = require('../models/user');
-const { handleValidationOrCastError, handleUserRequest } = require('../utils/utils');
+const { handleErrors, handleUserRequest } = require('../utils/utils');
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
-    .then((user) => res.status(200).send({ user }))
+    .then((user) => res.status(201).send({ user }))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 const getUsers = (req, res) => {
@@ -22,9 +21,8 @@ const getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => handleUserRequest(user, res))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 const updateProfile = (req, res) => {
@@ -36,9 +34,8 @@ const updateProfile = (req, res) => {
   })
     .then((user) => handleUserRequest(user, res))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 const updateAvatar = (req, res) => {
@@ -50,9 +47,8 @@ const updateAvatar = (req, res) => {
   })
     .then((user) => handleUserRequest(user, res))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 module.exports = {

@@ -1,16 +1,15 @@
 const Card = require('../models/card');
-const { handleValidationOrCastError, handleCardRequest } = require('../utils/utils');
+const { handleErrors, handleCardRequest } = require('../utils/utils');
 
 const createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-    .then((card) => res.status(200).send({ card }))
+    .then((card) => res.status(201).send({ card }))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 const getCards = (req, res) => {
@@ -23,9 +22,8 @@ const deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => handleCardRequest(card, res))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 const setLike = (req, res) => {
@@ -36,9 +34,8 @@ const setLike = (req, res) => {
   )
     .then((card) => handleCardRequest(card, res))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 const removeLike = (req, res) => {
@@ -49,9 +46,8 @@ const removeLike = (req, res) => {
   )
     .then((card) => handleCardRequest(card, res))
     .catch((err) => {
-      handleValidationOrCastError(err.name, res);
-    })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+      handleErrors(err.name, res);
+    });
 };
 
 module.exports = {
