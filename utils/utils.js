@@ -1,29 +1,22 @@
+const { errorCodes, errorMessages } = require('./constants');
+
 function handleErrors(name, res) {
   if (name === 'ValidationError' || name === 'CastError') {
-    res.status(400).send({ message: 'Переданы некорректные данные' });
+    res.status(errorCodes.BAD_REQUEST).send(errorMessages.badRequestMessage);
     return;
   }
-  res.status(500).send({ message: 'Произошла ошибка' });
+  res.status(errorCodes.INTERNAL_SERVER_ERROR).send(errorMessages.commonError);
 }
 
-function handleUserRequest(user, res) {
-  if (!user) {
-    res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+function handleRequest(item, res, message) {
+  if (!item) {
+    res.status(errorCodes.NOT_FOUND_ERROR).send(message);
     return;
   }
-  res.send({ user });
-}
-
-function handleCardRequest(card, res) {
-  if (!card) {
-    res.status(404).send({ message: 'Карточка не найдена' });
-    return;
-  }
-  res.status(200).send({ data: card });
+  res.send({ item });
 }
 
 module.exports = {
   handleErrors,
-  handleUserRequest,
-  handleCardRequest,
+  handleRequest,
 };
