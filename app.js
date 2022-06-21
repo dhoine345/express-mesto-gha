@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { resCodes, errorMessages } = require('./utils/constants');
+const { createUser, login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 
@@ -24,6 +25,8 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
+app.post('/signin', login);
+app.post('/signup', createUser);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
