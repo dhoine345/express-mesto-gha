@@ -4,6 +4,7 @@ const errorMessages = {
   commonError: { message: 'Произошла ошибка' },
   badRequest: { message: 'Переданы некорректные данные' },
   pageNotFound: { message: 'Страница не найдена' },
+  incorrectEmail: 'Неправильный формат почты',
 };
 const resCodes = {
   CREATED_CODE: 201,
