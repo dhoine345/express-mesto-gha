@@ -1,11 +1,17 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { handleErrors, handleRequest } = require('../utils/utils');
 const { resCodes, errorMessages } = require('../utils/constants');
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
-  User.create({ name, about, avatar })
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
     .then((user) => res.status(resCodes.CREATED_CODE).send({ data: user }))
     .catch((err) => {
       handleErrors(err.name, res);
