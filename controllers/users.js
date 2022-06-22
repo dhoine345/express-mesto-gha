@@ -57,7 +57,7 @@ const getUserById = (req, res) => {
     });
 };
 
-/*const updateProfile = (req, res) => {
+const updateProfile = (req, res) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, about }, {
@@ -67,29 +67,6 @@ const getUserById = (req, res) => {
     .then((user) => handleRequest(user, res, errorMessages.userError))
     .catch((err) => {
       handleErrors(err.name, res);
-    });
-};*/
-
-const updateProfile = (req, res, next) => {
-  const { name, about } = req.body;
-  const owner = req.user._id;
-  User.findByIdAndUpdate(
-    owner,
-    { name, about },
-    { new: true, runValidators: true },
-  )
-    .then((user) => {
-      if (!user) {
-        throw new Error('Нет пользователя с таким id');
-      }
-      res.status(200).send({ data: user });
-    })
-    .catch((error) => {
-      if (error.name === 'NotValidError') {
-        next(new Error('Некорректные данные'));
-      } else {
-        next(error);
-      }
     });
 };
 

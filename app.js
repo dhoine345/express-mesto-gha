@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const { resCodes, errorMessages } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -25,6 +26,8 @@ app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+
+app.use(errors());
 
 app.use((req, res) => {
   res.status(resCodes.NOT_FOUND_ERROR).send(errorMessages.pageNotFound);
