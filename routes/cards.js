@@ -9,11 +9,11 @@ const {
   removeLike,
 } = require('../controllers/cards');
 
-router.post('/', celebrate({
+router.post('/', auth, celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
   }).unknown(true),
-}), auth, createCard);
+}), createCard);
 router.get('/', auth, getCards);
 router.delete('/:cardId', auth, deleteCard);
 router.put('/:cardId/likes', auth, setLike);
