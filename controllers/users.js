@@ -33,6 +33,14 @@ const login = (req, res) => {
     });
 };
 
+const getCurrentUser = (req, res) => {
+  User.findById(req.user._id)
+    .then((user) => handleRequest(user, res, errorMessages.userError))
+    .catch((err) => {
+      handleErrors(err.name, res);
+    });
+};
+
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -80,4 +88,5 @@ module.exports = {
   updateProfile,
   updateAvatar,
   login,
+  getCurrentUser,
 };
