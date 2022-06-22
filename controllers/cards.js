@@ -20,16 +20,13 @@ const getCards = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  console.log('req', req.user);
   Card.findById(req.params.cardId)
     .then((card) => {
-      console.log('card', card.owner);
       if (req.user._id.toString() !== card.owner.toString()) { res.status(403).send({ message: 'Переданы некорректные данные' }); }
-      handleRequest(card, res, errorMessages.cardError);
-      card.remove();
+      Promise.resolve(handleRequest(card, res, errorMessages.cardError))
+        .then(() => card.remove());
     })
     .catch((err) => {
-      console.log('err', err);
       handleErrors(err.name, res);
     });
 };

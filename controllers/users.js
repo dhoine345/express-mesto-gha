@@ -5,7 +5,6 @@ const { handleErrors, handleRequest } = require('../utils/utils');
 const { resCodes, errorMessages, randomString } = require('../utils/constants');
 
 const createUser = (req, res) => {
-  console.log('req', req.body);
   const {
     name, about, avatar, email, password,
   } = req.body;
