@@ -19,8 +19,12 @@ const getCards = (req, res) => {
     .catch(() => res.status(resCodes.INTERNAL_SERVER_ERROR).send(errorMessages.commonError));
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
+    .then((card) => {
+      if (req.owner !== card.owner) { res.status(400).send({ message: 'Переданы некорректные данные' }); }
+      next();
+    })
     .then((card) => handleRequest(card, res, errorMessages.cardError))
     .catch((err) => {
       handleErrors(err.name, res);
