@@ -5,6 +5,7 @@ const { handleErrors, handleRequest } = require('../utils/utils');
 const { resCodes, errorMessages, randomString } = require('../utils/constants');
 
 const createUser = (req, res) => {
+  console.log('req', req.body);
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -13,7 +14,9 @@ const createUser = (req, res) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((user) => res.status(resCodes.CREATED_CODE).send({ data: user }))
+    .then((user) => res.status(resCodes.CREATED_CODE).send({
+      name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
+    }))
     .catch((err) => {
       handleErrors(err.name, res);
     });
