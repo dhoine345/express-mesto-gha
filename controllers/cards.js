@@ -24,9 +24,9 @@ const deleteCard = (req, res) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       console.log('card', card.owner);
-      if (req.user._id.toString() !== card.owner.toString()) { res.status(400).send({ message: 'Переданы некорректные данные' }); }
-      card.remove();
+      if (req.user._id.toString() !== card.owner.toString()) { res.status(403).send({ message: 'Переданы некорректные данные' }); }
       handleRequest(card, res, errorMessages.cardError);
+      card.remove();
     })
     .catch((err) => {
       console.log('err', err);
