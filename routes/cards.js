@@ -12,7 +12,7 @@ const {
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-  }),
+  }).unknown(true),
 }), auth, createCard);
 router.get('/', auth, getCards);
 router.delete('/:cardId', auth, deleteCard);
