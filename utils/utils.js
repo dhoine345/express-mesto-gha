@@ -1,4 +1,4 @@
-const { resCodes, errorMessages } = require('./constants');
+const { resCodes, errorMessages, regexUrl } = require('./constants');
 
 function handleErrors(name, res) {
   if (name === 'ValidationError' || name === 'CastError') {
@@ -16,7 +16,12 @@ function handleRequest(item, res, message) {
   res.send({ data: item });
 }
 
+function testUrl(link) {
+  return regexUrl.test(link) ? true : null;
+}
+
 module.exports = {
   handleErrors,
   handleRequest,
+  testUrl,
 };

@@ -8,6 +8,7 @@ const {
   updateAvatar,
   getCurrentUser,
 } = require('../controllers/users');
+const { testUrl } = require('../utils/utils');
 
 router.post('/', createUser);
 router.get('/', getUsers);
@@ -19,6 +20,10 @@ router.patch('/me', celebrate({
     about: Joi.string().required().min(2).max(30),
   }),
 }), updateProfile);
-router.patch('/me/avatar', updateAvatar);
+router.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required().custom(testUrl),
+  }),
+}), updateAvatar);
 
 module.exports = router;
