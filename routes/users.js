@@ -8,7 +8,7 @@ const {
   updateAvatar,
   getCurrentUser,
 } = require('../controllers/users');
-const { testUrl } = require('../utils/utils');
+const { regexUrl } = require('../utils/constants');
 
 router.post('/', createUser);
 router.get('/', getUsers);
@@ -22,7 +22,7 @@ router.patch('/me', celebrate({
 }), updateProfile);
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().custom(testUrl),
+    avatar: Joi.string().required().pattern(regexUrl),
   }),
 }), updateAvatar);
 
