@@ -7,6 +7,7 @@ const errorMessages = {
   incorrectEmail: 'Неправильный формат почты',
 };
 const resCodes = {
+  OK: 200,
   CREATED_CODE: 201,
   NOT_FOUND_ERROR: 404,
   INTERNAL_SERVER_ERROR: 500,

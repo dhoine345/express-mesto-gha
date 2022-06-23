@@ -13,7 +13,7 @@ function handleRequest(item, res, message) {
     res.status(resCodes.NOT_FOUND_ERROR).send(message);
     return;
   }
-  res.send({ data: item });
+  res.status(resCodes.OK).send({ data: item });
 }
 
 function testUrl(link) {
