@@ -20,15 +20,17 @@ const getCards = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  console.log('req', req.params);
+  console.log('req', req.user);
   Card.findById(req.params.cardId)
     .then((card) => {
-      if (req.user._id.toString() !== card.owner.toString()) { res.status(403).send({ message: 'Переданы некорректные данные' }); }
-      return card;
-      /*Promise.resolve(handleRequest(card, res, errorMessages.cardError))
-        .then(() => card.remove());*/
+      if (!card) {
+        res.status(resCodes.NOT_FOUND_ERROR).send(errorMessages.cardError);
+      } else if (req.user._id.toString() !== card.owner.toString()) {
+        res.status(403).send({ message: 'Переданы некорректные данные' });
+      }
+      res.status(resCodes.OK).send({ data: card });
+      card.remove();
     })
-    .then((card) => handleRequest(card, res, errorMessages.cardError))
     .catch((err) => {
       handleErrors(err.name, res);
     });
