@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
     payload = jwt.verify(token, randomString);
   } catch (err) {
     return res
-      .status(400)
+      .status(401)
       .send({ message: 'Необходима авторизация' });
   }
 
