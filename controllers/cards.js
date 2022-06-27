@@ -20,7 +20,6 @@ const getCards = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  console.log('req', req.user);
   Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {

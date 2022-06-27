@@ -17,6 +17,9 @@ const createUser = (req, res) => {
       name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
     }))
     .catch((err) => {
+      if (err.code === 11000) {
+        res.status(409).send({ message: 'Пароль или имя пользователя не верные' });
+      }
       handleErrors(err.name, res);
     });
 };

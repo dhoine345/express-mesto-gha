@@ -13,7 +13,11 @@ const { regexUrl } = require('../utils/constants');
 router.post('/', createUser);
 router.get('/', getUsers);
 router.get('/me', getCurrentUser);
-router.get('/:userId', getUserById);
+router.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    userID: Joi.string().length(24).hex(),
+  }),
+}), getUserById);
 router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
