@@ -30,7 +30,6 @@ const login = (req, res) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, randomString, { expiresIn: '7d' });
-
       res.send({ token });
     })
     .catch((err) => {
