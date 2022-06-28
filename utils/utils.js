@@ -4,7 +4,7 @@ const BadRequestError = require('./errors/NotFoundError');
 const ConflictError = require('./errors/ConflictError');
 
 function handleErrors(err, next) {
-  if (err.name === 'CastError') {
+  if (err.name === 'CastError' || err.name === 'ValidationError') {
     throw new BadRequestError(errorMessages.badRequest);
   } else if (err.code === 11000) {
     throw new ConflictError(errorMessages.emailError);
