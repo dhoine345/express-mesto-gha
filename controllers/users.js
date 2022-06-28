@@ -4,7 +4,7 @@ const User = require('../models/user');
 const { handleErrors, handleRequest } = require('../utils/utils');
 const { resCodes, errorMessages, randomString } = require('../utils/constants');
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -16,12 +16,7 @@ const createUser = (req, res) => {
     .then((user) => res.status(resCodes.CREATED_CODE).send({
       name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
     }))
-    .catch((err) => {
-      if (err.code === 11000) {
-        res.status(409).send({ message: 'Пароль или имя пользователя не верные' });
-      }
-      handleErrors(err.name, res);
-    });
+    .catch((err) => handleErrors(err, next));
 };
 
 const login = (req, res) => {
@@ -33,33 +28,30 @@ const login = (req, res) => {
       res.send({ token });
     })
     .catch((err) => {
+      console.log('errinlogin', err.message);
       res.status(401).send({ message: err.message });
     });
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => handleRequest(user, res, errorMessages.userError))
-    .catch((err) => {
-      handleErrors(err.name, res);
-    });
+    .catch((err) => handleErrors(err, next));
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch(() => res.status(resCodes.INTERNAL_SERVER_ERROR).send(errorMessages.commonError));
+    .catch(next);
 };
 
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => handleRequest(user, res, errorMessages.userError))
-    .catch((err) => {
-      handleErrors(err.name, res);
-    });
+    .catch((err) => handleErrors(err, next));
 };
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, about }, {
@@ -67,12 +59,10 @@ const updateProfile = (req, res) => {
     runValidators: true,
   })
     .then((user) => handleRequest(user, res, errorMessages.userError))
-    .catch((err) => {
-      handleErrors(err.name, res);
-    });
+    .catch((err) => handleErrors(err, next));
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { avatar }, {
@@ -80,9 +70,7 @@ const updateAvatar = (req, res) => {
     runValidators: true,
   })
     .then((user) => handleRequest(user, res, errorMessages.userError))
-    .catch((err) => {
-      handleErrors(err.name, res);
-    });
+    .catch((err) => handleErrors(err, next));
 };
 
 module.exports = {

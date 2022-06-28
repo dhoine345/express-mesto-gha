@@ -1,10 +1,12 @@
 const errorMessages = {
   cardError: { message: 'Карточка не найдена' },
-  userError: { message: 'Запрашиваемый пользователь не найден' },
+  userError: 'Запрашиваемый пользователь не найден',
   commonError: { message: 'Произошла ошибка' },
-  badRequest: { message: 'Переданы некорректные данные' },
+  badRequest: 'Переданы некорректные данные',
   pageNotFound: { message: 'Страница не найдена' },
   incorrectEmail: 'Неправильный формат почты',
+  server: 'На сервере произошла ошибка',
+  emailError: 'Указанный email уже занят',
 };
 const resCodes = {
   OK: 200,
@@ -12,6 +14,7 @@ const resCodes = {
   NOT_FOUND_ERROR: 404,
   INTERNAL_SERVER_ERROR: 500,
   BAD_REQUEST: 400,
+  CONFLICT: 409,
 };
 
 const randomString = '3995cb3ea47482de751bf3de83fa81d6d514ff11d02c0cd30ace6dd56c0dcc0e';

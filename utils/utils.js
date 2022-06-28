@@ -1,17 +1,20 @@
 const { resCodes, errorMessages } = require('./constants');
+const NotFoundError = require('./errors/NotFoundError');
+const BadRequestError = require('./errors/NotFoundError');
+const ConflictError = require('./errors/ConflictError');
 
-function handleErrors(name, res) {
-  if (name === 'ValidationError' || name === 'CastError') {
-    res.status(resCodes.BAD_REQUEST).send(errorMessages.badRequest);
-    return;
+function handleErrors(err, next) {
+  if (err.name === 'CastError') {
+    throw new BadRequestError(errorMessages.badRequest);
+  } else if (err.code === 11000) {
+    throw new ConflictError(errorMessages.emailError);
   }
-  res.status(resCodes.INTERNAL_SERVER_ERROR).send(errorMessages.commonError);
+  next(err);
 }
 
 function handleRequest(item, res, message) {
   if (!item) {
-    res.status(resCodes.NOT_FOUND_ERROR).send(message);
-    return;
+    throw new NotFoundError(message);
   }
   res.status(resCodes.OK).send({ data: item });
 }

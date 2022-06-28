@@ -41,10 +41,23 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use(errors());
-
 app.use((req, res) => {
   res.status(resCodes.NOT_FOUND_ERROR).send(errorMessages.pageNotFound);
+});
+
+app.use(errors());
+
+app.use((err, req, res, next) => {
+  console.log('errinapp', err);
+  const { statusCode = resCodes.INTERNAL_SERVER_ERROR, message } = err;
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === resCodes.INTERVAL_SERVER_ERROR
+        ? errorMessages.server
+        : message,
+    });
+  next();
 });
 
 app.listen(PORT, () => {
