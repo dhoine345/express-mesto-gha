@@ -7,6 +7,7 @@ const errorMessages = {
   incorrectEmail: 'Неправильный формат почты',
   server: 'На сервере произошла ошибка',
   emailError: 'Указанный email уже занят',
+  forbidden: { message: 'Действие запрещено' },
 };
 const resCodes = {
   OK: 200,
@@ -15,6 +16,7 @@ const resCodes = {
   INTERNAL_SERVER_ERROR: 500,
   BAD_REQUEST: 400,
   CONFLICT: 409,
+  FORBIDDEN: 403,
 };
 
 const randomString = '3995cb3ea47482de751bf3de83fa81d6d514ff11d02c0cd30ace6dd56c0dcc0e';
