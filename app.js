@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const { celebrate, Joi, errors } = require('celebrate');
 const { resCodes, errorMessages } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');

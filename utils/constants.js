@@ -22,13 +22,11 @@ const resCodes = {
   UNAUTHORIZED: 401,
 };
 
-const randomString = '3995cb3ea47482de751bf3de83fa81d6d514ff11d02c0cd30ace6dd56c0dcc0e';
 // eslint-disable-next-line no-useless-escape
 const regexUrl = /https?:\/\/[www\.]*[\w-]+\.[a-z]+[\/\w\S]*/;
 
 module.exports = {
   errorMessages,
   resCodes,
-  randomString,
   regexUrl,
 };
