@@ -1,5 +1,5 @@
 const errorMessages = {
-  cardError: { message: 'Карточка не найдена' },
+  cardError: 'Карточка не найдена',
   userError: 'Запрашиваемый пользователь не найден',
   commonError: { message: 'Произошла ошибка' },
   badRequest: 'Переданы некорректные данные',
@@ -7,7 +7,9 @@ const errorMessages = {
   incorrectEmail: 'Неправильный формат почты',
   server: 'На сервере произошла ошибка',
   emailError: 'Указанный email уже занят',
-  forbidden: { message: 'Действие запрещено' },
+  forbidden: 'Действие запрещено',
+  unauthorized: 'Необходима авторизация',
+  emailOrPassword: 'Неправильные почта или пароль',
 };
 const resCodes = {
   OK: 200,
@@ -17,6 +19,7 @@ const resCodes = {
   BAD_REQUEST: 400,
   CONFLICT: 409,
   FORBIDDEN: 403,
+  UNAUTHORIZED: 401,
 };
 
 const randomString = '3995cb3ea47482de751bf3de83fa81d6d514ff11d02c0cd30ace6dd56c0dcc0e';

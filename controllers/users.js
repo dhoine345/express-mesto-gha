@@ -28,7 +28,7 @@ const createUser = (req, res, next) => {
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -36,9 +36,7 @@ const login = (req, res) => {
       const token = jwt.sign({ _id: user._id }, randomString, { expiresIn: '7d' });
       res.send({ token });
     })
-    .catch((err) => {
-      res.status(401).send({ message: err.message });
-    });
+    .catch((err) => handleErrors(err, next));
 };
 
 const getCurrentUser = (req, res, next) => {

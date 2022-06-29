@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 const { handleErrors, handleRequest } = require('../utils/utils');
 const { resCodes, errorMessages } = require('../utils/constants');
+const ForbiddenError = require('../utils/errors/ForbiddenError');
 
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
@@ -23,7 +24,7 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         res.status(resCodes.NOT_FOUND_ERROR).send(errorMessages.cardError);
       } else if (req.user._id.toString() !== card.owner.toString()) {
-        res.status(resCodes.FORBIDDEN).send(errorMessages.forbidden);
+        throw new ForbiddenError(errorMessages.forbidden);
       }
       res.status(resCodes.OK).send({ data: card });
       card.remove();
