@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const { celebrate, Joi, errors } = require('celebrate');
 const { resCodes, errorMessages } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { regexUrl } = require('./utils/constants');
+const NotFoundError = require('./utils/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 
@@ -41,14 +43,13 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use((req, res) => {
-  res.status(resCodes.NOT_FOUND_ERROR).send(errorMessages.pageNotFound);
+app.use(() => {
+  throw new NotFoundError(errorMessages.pageNotFound);
 });
 
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  console.log('errinapp', err);
   const { statusCode = resCodes.INTERNAL_SERVER_ERROR, message } = err;
   res
     .status(statusCode)

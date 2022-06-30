@@ -2,9 +2,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { handleErrors, handleRequest } = require('../utils/utils');
-const { resCodes, errorMessages, randomString } = require('../utils/constants');
+const { resCodes, errorMessages } = require('../utils/constants');
 const BadRequestError = require('../utils/errors/NotFoundError');
 const ConflictError = require('../utils/errors/ConflictError');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const createUser = (req, res, next) => {
   const {
@@ -15,16 +17,15 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((user) => res.status(resCodes.CREATED_CODE).send({
-      name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
-    }))
+    .then((user) => res.status(resCodes.CREATED_CODE).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(errorMessages.badRequest));
       } else if (err.code === 11000) {
         next(new ConflictError(errorMessages.emailError));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -33,7 +34,7 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, randomString, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.send({ token });
     })
     .catch((err) => handleErrors(err, next));

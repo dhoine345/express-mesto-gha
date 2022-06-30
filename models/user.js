@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const isEmail = require('validator/lib/isEmail');
 const { errorMessages } = require('../utils/constants');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const { validateUrl } = require('../utils/utils');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,22 +21,26 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    validate: {
+      validator: validateUrl,
+    },
   },
   email: {
     type: String,
     required: true,
     unique: true,
+    validate: {
+      validator: (v) => isEmail(v),
+    },
   },
   password: {
     type: String,
     required: true,
-    minlength: 8,
     select: false,
   },
 }, { versionKey: false });
 
-// eslint-disable-next-line func-names
-userSchema.statics.findUserByCredentials = function (email, password, next) {
+userSchema.statics.findUserByCredentials = function func(email, password, next) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
@@ -52,5 +58,13 @@ userSchema.statics.findUserByCredentials = function (email, password, next) {
     })
     .catch(next);
 };
+
+userSchema.set('toJSON', {
+  transform(doc, ret) {
+    const user = ret;
+    delete user.password;
+    return ret;
+  },
+});
 
 module.exports = mongoose.model('user', userSchema);
