@@ -50,7 +50,6 @@ app.use(() => {
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  console.log('errinapp', err);
   const { statusCode = resCodes.INTERNAL_SERVER_ERROR, message } = err;
   res
     .status(statusCode)
