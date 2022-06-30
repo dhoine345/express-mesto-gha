@@ -5,7 +5,8 @@ const { regexUrl } = require('./constants');
 
 function handleErrors(err, next) {
   if (err.name === 'CastError' || err.name === 'ValidationError') {
-    throw new BadRequestError(errorMessages.badRequest);
+    next(new BadRequestError(errorMessages.badRequest));
+    return;
   }
   next(err);
 }

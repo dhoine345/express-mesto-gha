@@ -6,6 +6,7 @@ const { resCodes, errorMessages } = require('./utils/constants');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { regexUrl } = require('./utils/constants');
+const NotFoundError = require('./utils/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 
@@ -42,8 +43,8 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use((req, res) => {
-  res.status(resCodes.NOT_FOUND_ERROR).send(errorMessages.pageNotFound);
+app.use(() => {
+  throw new NotFoundError(errorMessages.pageNotFound);
 });
 
 app.use(errors());

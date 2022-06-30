@@ -25,8 +25,9 @@ const createUser = (req, res, next) => {
         next(new BadRequestError(errorMessages.badRequest));
       } else if (err.code === 11000) {
         next(new ConflictError(errorMessages.emailError));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 

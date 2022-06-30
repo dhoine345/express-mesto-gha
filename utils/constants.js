@@ -3,7 +3,7 @@ const errorMessages = {
   userError: 'Запрашиваемый пользователь не найден',
   commonError: { message: 'Произошла ошибка' },
   badRequest: 'Переданы некорректные данные',
-  pageNotFound: { message: 'Страница не найдена' },
+  pageNotFound: 'Страница не найдена',
   incorrectEmail: 'Неправильный формат почты',
   server: 'На сервере произошла ошибка',
   emailError: 'Указанный email уже занят',
